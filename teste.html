@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feliz Aniversário, Aster!</title>
+    <style>
+        /* Estilo visual da página (CSS) */
+        body {
+            background-color: #121212;
+            color: #00ff00;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            flex-direction: column;
+        }
+
+        /* Botões estilo Hacker */
+        .btn-terminal {
+            background-color: #121212;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            padding: 15px 30px;
+            font-size: 1.3em;
+            font-family: 'Courier New', Courier, monospace;
+            cursor: pointer;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .btn-terminal:hover {
+            background-color: #00ff00;
+            color: #121212;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+        }
+
+        #btn-sentimentos {
+            display: none; /* Escondido até o final da animação */
+            margin-top: 20px;
+            font-size: 1.1em;
+            border-color: #ff00ff;
+            color: #ff00ff;
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+        }
+
+        #btn-sentimentos:hover {
+            background-color: #ff00ff;
+            color: #121212;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
+        }
+
+        #console {
+            background-color: #000;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+            width: 90%;
+            max-width: 650px;
+            min-height: 400px;
+            font-size: 1.1em;
+            line-height: 1.5;
+            display: none;
+            overflow-y: auto;
+        }
+
+        .cake {
+            color: #ff9900;
+            white-space: pre;
+            text-align: center;
+            font-size: 1.2em;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .highlight {
+            color: #ff00ff;
+            font-weight: bold;
+            font-size: 1.3em;
+            text-align: center;
+            display: block;
+            margin-top: 15px;
+        }
+
+        .texto-sentimental {
+            color: #00ffff; /* Muda para ciano na segunda parte para dar uma estética bonita */
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+
+    <button id="btn-iniciar" class="btn-terminal">▶ INICIAR PROTOCOLO</button>
+
+    <div id="console"></div>
+
+    <button id="btn-sentimentos" class="btn-terminal">❤️ O que eu sinto sobre você</button>
+
+    <script>
+        /* Lógica e Animações (JavaScript) */
+        
+        const nome = "Aster"; 
+        const btnIniciar = document.getElementById('btn-iniciar');
+        const btnSentimentos = document.getElementById('btn-sentimentos');
+        const consoleDiv = document.getElementById('console');
+
+        // --- DIGITE SEU TEXTO AQUI EMBAIXO ---
+        // Você pode usar \n para pular linhas no texto
+        const textoSentimentos = `Aster,\n\nEscrever isso aqui é uma forma de mostrar o quanto você é especial para mim. Quero que saiba que estar com voce faz toda a diferença nos meus dias.\n\nQuero que saiba que estarei sempre ao seu lado meu irmao amado, pro que der e vier\n\nEu te amo, Ma Cherie`;
+
+        const bolo = `
+               ,,,,
+              _|||||_
+             {~*~*~*~}
+           __{*~*~*~*}__
+          \`-------------\`
+        `;
+
+        const passos = [
+            { texto: `Iniciando protocolo de celebração para: ${nome}...`, delay: 60 },
+            { texto: "Carregando festa:", delay: 60 },
+            { texto: "████████████████████ 100%", delay: 20 },
+            { texto: "3... 2... 1...", delay: 150 },
+            { texto: `🎉 FELIZ ANIVERSÁRIO, ${nome.toUpperCase()}! 🎉`, delay: 60, classe: "highlight" },
+            { mostrarBolo: true },
+            { texto: `Parabéns, ${nome}! Que o seu dia seja incrível, repleto de momentos felizes, saúde, paz e que todos os seus sonhos se realizem!`, delay: 50 }
+        ];
+
+        async function digitar(texto, delay, classe = "") {
+            let p = document.createElement('span');
+            if (classe) p.className = classe;
+            consoleDiv.appendChild(p);
+            
+            for (let i = 0; i < texto.length; i++) {
+                // Se encontrar um \n no texto, insere uma quebra de linha real no HTML
+                if (texto.charAt(i) === '\n') {
+                    p.innerHTML += '<br>';
+                } else {
+                    p.innerHTML += texto.charAt(i);
+                }
+                await new Promise(r => setTimeout(r, delay));
+            }
+            consoleDiv.appendChild(document.createElement('br'));
+            consoleDiv.appendChild(document.createElement('br'));
+            // Da scroll automático para baixo se o texto for longo
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        }
+
+        async function exibirBolo() {
+            let pre = document.createElement('div');
+            pre.className = "cake";
+            pre.innerText = bolo;
+            consoleDiv.appendChild(pre);
+            pre.style.display = "block";
+            await new Promise(r => setTimeout(r, 800)); 
+        }
+
+        async function iniciarFesta() {
+            btnIniciar.style.display = 'none';
+            consoleDiv.style.display = 'block';
+
+            for (let passo of passos) {
+                if (passo.mostrarBolo) {
+                    await exibirBolo();
+                } else {
+                    await digitar(passo.texto, passo.delay, passo.classe);
+                }
+                await new Promise(r => setTimeout(r, 600)); 
+            }
+
+            // Quando tudo acabar, mostra o botão secreto
+            btnSentimentos.style.display = 'block';
+        }
+
+        async function mostrarProximaPagina() {
+            // Esconde o botão de sentimentos
+            btnSentimentos.style.display = 'none';
+            
+            // Limpa o console com um efeito piscante rápido
+            consoleDiv.innerHTML = "Limpando console...";
+            await new Promise(r => setTimeout(r, 800));
+            consoleDiv.innerHTML = "";
+            
+            // Inicia a digitação do texto sentimental
+            await digitar("Acessando arquivos confidenciais...\nCarregando memórias...", 40);
+            await new Promise(r => setTimeout(r, 1000));
+            
+            consoleDiv.innerHTML = ""; // Limpa de novo para o texto principal
+            await digitar(textoSentimentos, 60, "texto-sentimental");
+        }
+
+        btnIniciar.addEventListener('click', iniciarFesta);
+        btnSentimentos.addEventListener('click', mostrarProximaPagina);
+    </script>
+
+</body>
+</html>
